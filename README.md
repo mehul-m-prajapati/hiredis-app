@@ -3,7 +3,7 @@
 - Redis server
 ```
 $ sudo apt-get install redis-server
-$ sudo systemctl status redis-server
+$ sudo systemctl start redis-server
 ```
 
 - To test the Redis server
