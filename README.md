@@ -13,6 +13,9 @@ $ redis-cli monitor
 $ redis-cli
 127.0.0.1:6379> ping
 PONG
+127.0.0.1:6379> set test "It's working!"  # result ok
+127.0.0.1:6379> get test  # result "It's working!"
+127.0.0.1:6379> exit
 ```
 
 - hiredis library
