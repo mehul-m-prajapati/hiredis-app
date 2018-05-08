@@ -41,42 +41,34 @@ int main(int argc, char **argv)
 
     /* Set a key */
     reply = redisCommand(c, "SET %s %s", "project", "syslog-ng");
-    printf("SET: %s\n", reply->str);
+    printf("SET project syslog-ng: %s\n", reply->str);
     freeReplyObject(reply);
 
-    /* Set a key using binary safe API */
-    reply = redisCommand(c,"SET %b %b", "bar", (size_t) 3, "hello", (size_t) 5);
-    printf("SET (binary API): %s\n", reply->str);
-    freeReplyObject(reply);
-
-    /* Try a GET and two INCR */
+    /* Try a GET */
     reply = redisCommand(c,"GET project");
     printf("GET project: %s\n", reply->str);
     freeReplyObject(reply);
 
-    reply = redisCommand(c,"INCR counter");
-    printf("INCR counter: %lld\n", reply->integer);
-    freeReplyObject(reply);
-    /* again ... */
-    reply = redisCommand(c,"INCR counter");
-    printf("INCR counter: %lld\n", reply->integer);
-    freeReplyObject(reply);
-
-    /* Create a list of numbers, from 0 to 9 */
-    reply = redisCommand(c,"DEL mylist");
+    /* Create a list of fruits */
+    reply = redisCommand(c,"DEL fruits");
     freeReplyObject(reply);
     
-    for (j = 0; j < 10; j++) 
-    {
-        char buf[64];
+    reply = redisCommand(c,"LPUSH fruits banana");
+    freeReplyObject(reply);
+    
+    reply = redisCommand(c,"LPUSH fruits apple");
+    freeReplyObject(reply);
+    
+    reply = redisCommand(c,"LPUSH fruits kiwi");
+    freeReplyObject(reply);
 
-        snprintf(buf,64,"%u",j);
-        reply = redisCommand(c,"LPUSH mylist element-%s", buf);
-        freeReplyObject(reply);
-    }
+    reply = redisCommand(c,"LPUSH fruits mango");
+    freeReplyObject(reply);
 
-    /* Let's check what we have inside the list */
-    reply = redisCommand(c,"LRANGE mylist 0 -1");
+    printf("\nList of fruits\n"); 
+
+   /* Let's check what we have inside the list */
+    reply = redisCommand(c,"LRANGE fruits 0 -1");
     
     if (reply->type == REDIS_REPLY_ARRAY) 
     {
